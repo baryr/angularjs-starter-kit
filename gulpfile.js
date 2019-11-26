@@ -1,7 +1,6 @@
 const gulp = require('gulp');
 const concat = require('gulp-concat');
 const del = require('del');
-const runSequence = require('run-sequence');
 
 const scripts = require('./scripts');
 const styles = require('./styles');
@@ -9,59 +8,64 @@ const templates = require('./templates');
 
 const browserSync = require('browser-sync').create();
 
+const buildDir = './dist/';
+
 function browserSyncReload() {
     return browserSync.reload({
         stream: true
     })
 }
 
-const buildDir = './dist/';
-
-gulp.task('css', () =>
-    gulp.src(styles)
-    .pipe(concat('style.css'))
-    .pipe(gulp.dest(buildDir))
-    .pipe(browserSyncReload())
-);
-
-gulp.task('js', () =>
-    gulp.src(scripts)
-    .pipe(concat('script.js'))
-    .pipe(gulp.dest(buildDir))
-    .pipe(browserSyncReload())
-);
-
-gulp.task('html', () =>
-    gulp.src(templates)
-    .pipe(gulp.dest(buildDir))
-    .pipe(browserSyncReload())
-);
-
-gulp.task('assets', () => {
-    return gulp.src([
-            'assets/**/*'
-        ])
-        .pipe(gulp.dest(buildDir))
-        .pipe(browserSyncReload());
-});
-
-gulp.task('browser-sync', () => {
-    browserSync.init(null, {
-        open: true,
+function watch() {
+    browserSync.init({
         server: {
             baseDir: buildDir
         }
-    })
-});
+    });
+    gulp.watch(['./src/**/*.html']).on('change', html);
+    gulp.watch(['./src/**/*.js']).on('change', js);
+    gulp.watch(['./src/**/*.css']).on('change', css);
+    gulp.watch(['./assets/**/*.*']).on('change', assets);
+}
 
-gulp.task('clean', () => del([buildDir]));
+function html() {
+    return gulp.src(templates)
+      .pipe(gulp.dest(buildDir))
+      .pipe(browserSyncReload())
+}
 
-gulp.task('build', ['css', 'js', 'html', 'assets']);
+function js() {
+  return gulp.src(scripts)
+    .pipe(concat('script.js'))
+    .pipe(gulp.dest(buildDir))
+    .pipe(browserSyncReload())
+}
 
-gulp.task('default', callback => {
-    runSequence('clean', 'build', 'browser-sync', callback);
-    gulp.watch(['./src/**/*.css'], ['css']);
-    gulp.watch(['./src/**/*.js'], ['js']);
-    gulp.watch(['./src/**/*.html'], ['html']);
-    gulp.watch(['./assets/**/*.*'], ['assets']);
-});
+function css() {
+  return gulp.src(styles)
+    .pipe(concat('style.css'))
+    .pipe(gulp.dest(buildDir))
+    .pipe(browserSyncReload())
+}
+
+function assets() {
+    return gulp.src([
+          'assets/**/*'
+      ])
+      .pipe(gulp.dest(buildDir))
+      .pipe(browserSyncReload());
+}
+
+
+function clean(callBack) {
+  del.sync([buildDir]);
+  callBack();
+};
+
+function build(callBack) {
+  return gulp.series(clean, html, js, css, assets)(callBack);
+}
+
+exports.clean = clean
+exports.build = build
+exports.watch = watch
