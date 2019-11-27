@@ -1,33 +1,22 @@
-// posts.controller.js
-(() => {
+export default class PostsController {
 
-    angular
-        .module('app')
-        .controller('PostsController', PostsController);
+  /* @ngInject */
+  constructor(postsService) {
+    this.postsService = postsService;
+    this.header = 'Posts';
+  }
 
-    function PostsController(postsService) {
-        const vm = this;
-        vm.$onInit = onInit;
-        vm.header = 'Posts';
-        vm.posts = null;
+  $onInit() {
+    console.log('PostsController $onInit()');
 
-        activate();
+    this.postsService.getPosts()
+      .then(posts => {
+          this.posts = posts;
+      });
 
-        ////////////
+    // Initialization logic that relies on bindings being present
+    // should be put in this method, which is guarranteed to
+    // always be called after the bindings have been assigned.
+  }
 
-        function activate() {
-            // Resolve start-up logic
-            postsService.getPosts()
-                .then(posts => {
-                    vm.posts = posts;
-                });
-        }
-
-        function onInit() {
-            // Initialization logic that relies on bindings being present
-            // should be put in this method, which is guarranteed to
-            // always be called after the bindings have been assigned.
-        }
-    }
-
-})();
+}

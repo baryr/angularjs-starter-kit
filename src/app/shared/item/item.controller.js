@@ -1,27 +1,15 @@
-// item.controller.js
-(() => {
+export default class ItemController {
 
-    angular
-        .module('app')
-        .controller('ItemController', ItemController);
+  /* @ngInject */
+  constructor() {
+  }
 
-    function ItemController() {
-        const vm = this;
-        vm.$onInit = onInit;
+  $onInit() {
+    console.log('ItemController $onInit()');
 
-        activate();
+    // Initialization logic that relies on bindings being present
+    // should be put in this method, which is guarranteed to
+    // always be called after the bindings have been assigned.
+  }
 
-        ////////////
-
-        function activate() {
-            // Resolve start-up logic
-        }
-
-        function onInit() {
-            // Initialization logic that relies on bindings being present
-            // should be put in this method, which is guarranteed to
-            // always be called after the bindings have been assigned.
-        }
-    }
-
-})();
+}

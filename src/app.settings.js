@@ -1,9 +1,2 @@
-// app.settings.js
-(() => {
-
-    angular.module('app')
-
-        .value('debuggingBorder', true)
-        .value('apiBase', 'https://jsonplaceholder.typicode.com/')
-
-})();
+export const debuggingBorder = true
+export const apiBase = 'https://jsonplaceholder.typicode.com/'

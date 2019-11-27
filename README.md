@@ -1,8 +1,12 @@
 # A starter kit for projects using the latest version of AngularJS
 
-This project is an application skeleton (initial scaffolding or template) for a typical *modern* AngularJS web app.
+This project is an application skeleton playground (initial scaffolding or template) for a typical *modern* AngularJS web app.
 
-This is fork of [lackovic angularjs-starter-kit](https://github.com/lackovic/angularjs-starter-kit) with bumped dependencies and adjusted gulpfile.js.
+This fork is based on [lackovic angularjs-starter-kit](https://github.com/lackovic/angularjs-starter-kit) with:
+* bumped dependencies,
+* bumped devDependencies,
+* code rewritten to use ECMAScript Classes, Modules, Sass and WebPack build (with ng-annotate and babel)
+
 
 ## Features
 
@@ -13,15 +17,15 @@ This is fork of [lackovic angularjs-starter-kit](https://github.com/lackovic/ang
 * Component-based design;
 * [AngularUI Router](http://angular-ui.github.io/ui-router/) for client-side routing;
 * Data calls through services;
-* ECMAScript 6 (arrow functions, strings interpolation);
+* ECMAScript 6 (arrow functions, strings interpolation, Classes, Modules);
 * [Browsersync](https://browsersync.io/);
 
 ## How to use
 
 1. clone or download
 2. `npm install`
-3. `gulp build`
-4. `gulp watch`
+3. Running with gulp: `gulp clean` and `gulp build_watch`
+4. Running with npm scripts: `npm run-script build` and `npm start`
 
 ## References
 
@@ -30,3 +34,4 @@ This is fork of [lackovic angularjs-starter-kit](https://github.com/lackovic/ang
 * [AngularJS with Gulp Step by Step](https://youtu.be/p9ZngMW80-k) by Mark Winterbottom
 * [Designing and Building Component-based AngularJS Applications](https://app.pluralsight.com/library/courses/component-based-angularjs-applications) by Miguel Castro
 * [Ultimate AngularJS Component Oriented Design Guide](http://gautierdelorme.com/2016/04/20/ultimate-angularjs-component-oriented-design-guide.html) by Gautier Delorme
+* [AngularJs with Webpack ](http://compiledweb.com/angularjs-with-webpack-part-2-angular-component-and-webpack-loader/)

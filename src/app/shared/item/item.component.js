@@ -1,15 +1,14 @@
-// item.component.js
-(() => {
+import template from './item.html';
+import controller from './item.controller';
+import './item.component.scss';
 
-    angular
-        .module('app')
-        .component('item', {
-            controller: 'ItemController',
-            controllerAs: 'vm',
-            templateUrl: 'app/shared/item/item.html',
-            bindings: {
-                item: '='
-            }
-        });
+const ItemComponent = {
+  template: template,
+  controller: controller,
+  controllerAs: 'vm',
+  bindings: {
+      item: '<'
+  }
+};
 
-})();
+export default ItemComponent;

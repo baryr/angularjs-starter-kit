@@ -1,28 +1,16 @@
-// home.controller.js
-(() => {
+export default class HomeController {
 
-    angular
-        .module('app')
-        .controller('HomeController', HomeController);
+  /* @ngInject */
+  constructor() {
+    this.header = 'Home sweet home!';
+  }
 
-    function HomeController() {
-        const vm = this;
-        vm.header = 'Home sweet home!';
-        vm.$onInit = onInit;
+  $onInit() {
+    console.log('NavBarController $onInit()');
 
-        activate();
+    // Initialization logic that relies on bindings being present
+    // should be put in this method, which is guarranteed to
+    // always be called after the bindings have been assigned.
+  }
 
-        ////////////
-
-        function activate() {
-            // Resolve start-up logic
-        }
-
-        function onInit() {
-            // Initialization logic that relies on bindings being present
-            // should be put in this method, which is guarranteed to
-            // always be called after the bindings have been assigned.
-        }
-    }
-
-})();
+}

@@ -1,12 +1,11 @@
-// home.component.js
-(() => {
+import template from './nav-bar.html';
+import controller from './nav-bar.controller';
+import './nav-bar.component.scss';
 
-    angular
-        .module('app')
-        .component('navBar', {
-            controller: 'NavBarController',
-            controllerAs: 'vm',
-            templateUrl: 'app/nav-bar/nav-bar.html'
-        });
+const NavBarComponent = {
+  template: template,
+  controller: controller,
+  controllerAs: 'vm'
+};
 
-})();
+export default NavBarComponent;

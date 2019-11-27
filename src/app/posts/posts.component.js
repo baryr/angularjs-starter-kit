@@ -1,12 +1,11 @@
-// posts.component.js
-(() => {
+import template from './posts.html';
+import controller from './posts.controller';
+import './posts.component.scss';
 
-    angular
-        .module('app')
-        .component('posts', {
-            controller: 'PostsController',
-            controllerAs: 'vm',
-            templateUrl: 'app/posts/posts.html'
-        });
+const PostsController = {
+  template: template,
+  controller: controller,
+  controllerAs: 'vm'
+};
 
-})();
+export default PostsController;

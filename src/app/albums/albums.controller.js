@@ -1,34 +1,22 @@
-// albums.controller.js
-(() => {
+export default class AlbumsController {
 
-    angular
-        .module('app')
-        .controller('AlbumsController', AlbumsController);
+  /* @ngInject */
+  constructor(albumsService) {
+    this.albumsService = albumsService;
+    this.header = 'Albums';
+  }
 
-    function AlbumsController(albumsService) {
-        const vm = this;
-        vm.$onInit = onInit;
-        vm.albums = null;
-        vm.header = 'Albums';
+  $onInit() {
+    console.log('AlbumsController $onInit()');
 
-        activate();
+    this.albumsService.getAlbums()
+      .then(albums => {
+        this.albums = albums;
+      });
 
-        ////////////
+    // Initialization logic that relies on bindings being present
+    // should be put in this method, which is guarranteed to
+    // always be called after the bindings have been assigned.
+  }
 
-        function activate() {
-            // Resolve start-up logic
-            albumsService.getAlbums()
-                .then(albums => {
-                    vm.albums = albums;
-                });
-        }
-
-        function onInit() {
-            // Initialization logic that relies on bindings being present
-            // should be put in this method, which is guarranteed to
-            // always be called after the bindings have been assigned.
-        }
-
-    }
-
-})();
+}

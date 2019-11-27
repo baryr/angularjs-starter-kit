@@ -1,23 +1,12 @@
-// posts.service.js
-(() => {
+export default class PostsService {
 
-    angular
-        .module('app')
-        .factory('postsService', PostsService);
+  /* @ngInject */
+  constructor(apiService) {
+    this.apiService = apiService;
+  }
 
-    function PostsService(apiService) {
+  getPosts() {
+    return this.apiService.get('posts', true);
+  }
 
-        return {
-            getPosts: getPosts
-        };
-
-        ////////////
-
-        function getPosts() {
-            return apiService
-                .get('posts', true);
-        }
-
-    }
-
-})();
+}

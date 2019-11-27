@@ -1,54 +1,91 @@
 const gulp = require('gulp');
-const concat = require('gulp-concat');
+const gulpTaskListing = require('gulp-task-listing');
 const del = require('del');
-
-const scripts = require('./scripts');
-const styles = require('./styles');
-const templates = require('./templates');
-
-const browserSync = require('browser-sync').create();
 
 const buildDir = './dist/';
 
+
+// BrowserSync
+const browserSync = require('browser-sync').create();
+
 function browserSyncReload() {
-    return browserSync.reload({
-        stream: true
-    })
+  return browserSync.reload({
+    stream: true
+  })
 }
 
 function watch() {
-    browserSync.init({
-        server: {
-            baseDir: buildDir
-        }
-    });
-    gulp.watch(['./src/**/*.html']).on('change', html);
-    gulp.watch(['./src/**/*.js']).on('change', js);
-    gulp.watch(['./src/**/*.css']).on('change', css);
-    gulp.watch(['./assets/**/*.*']).on('change', assets);
+  browserSync.init({
+      server: {
+          baseDir: buildDir
+      }
+  });
+  gulp.watch(['./src/**/*.html']).on('change', webpack);
+  gulp.watch(['./src/**/*.js']).on('change', webpack);
+  gulp.watch(['./src/**/*.scss']).on('change', webpack);
+  gulp.watch(['./assets/**/*.*']).on('change', copyAssets);
 }
 
-function html() {
-    return gulp.src(templates)
-      .pipe(gulp.dest(buildDir))
-      .pipe(browserSyncReload())
-}
 
-function js() {
-  return gulp.src(scripts)
-    .pipe(concat('script.js'))
+// Webpack
+const HtmlWebpackPlugin = require('html-webpack-plugin');
+const NgAnnotatePlugin = require('ng-annotate-webpack-plugin');
+const webpackStream = require('webpack-stream');
+const path = require('path');
+
+const webpackOptions = {
+  output: {
+    filename: 'app.bundle.js',
+    path: path.resolve(__dirname, 'dist')
+  },
+  mode: 'development',
+  watch: false,
+  module: {
+    rules: [
+      { test: /\.js$/, exclude: /node_modules/, loaders: ['babel-loader'] },
+      { test: /\.(html)$/, use: 'html-loader'},
+      { test: /\.(scss)$/, use: [
+          'style-loader',
+          'css-loader',
+          'sass-loader'
+        ]
+      }
+    ]
+  },
+  plugins: [
+    new HtmlWebpackPlugin({template: './src/index.html'}),
+    new NgAnnotatePlugin({
+      add: true,
+    })
+  ]
+};
+
+function webpack() {
+  return gulp.src([
+      "./src/app.module.js",
+      "./src/app/**/*.module.js"
+    ])
+    .pipe(webpackStream(webpackOptions))
     .pipe(gulp.dest(buildDir))
     .pipe(browserSyncReload())
+};
+
+
+// Main tasks:
+function clean(callBack) {
+  del.sync([buildDir]);
+  callBack();
+};
+
+function build(callBack) {
+  return gulp.series(clean, copyAssets, webpack)(callBack);
 }
 
-function css() {
-  return gulp.src(styles)
-    .pipe(concat('style.css'))
-    .pipe(gulp.dest(buildDir))
-    .pipe(browserSyncReload())
+function build_watch(callBack) {
+  return gulp.series(build, watch)(callBack);
 }
 
-function assets() {
+function copyAssets() {
     return gulp.src([
           'assets/**/*'
       ])
@@ -56,16 +93,7 @@ function assets() {
       .pipe(browserSyncReload());
 }
 
-
-function clean(callBack) {
-  del.sync([buildDir]);
-  callBack();
-};
-
-function build(callBack) {
-  return gulp.series(clean, html, js, css, assets)(callBack);
-}
-
+exports.help = gulpTaskListing
 exports.clean = clean
 exports.build = build
-exports.watch = watch
+exports.build_watch = build_watch

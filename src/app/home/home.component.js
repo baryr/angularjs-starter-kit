@@ -1,12 +1,11 @@
-// home.component.js
-(() => {
+import template from './home.html';
+import controller from './home.controller';
+import './home.component.scss';
 
-    angular
-        .module('app')
-        .component('home', {
-            controller: 'HomeController',
-            controllerAs: 'vm',
-            templateUrl: 'app/home/home.html'
-        });
+const HomeComponent = {
+  template: template,
+  controller: controller,
+  controllerAs: 'vm'
+};
 
-})();
+export default HomeComponent;

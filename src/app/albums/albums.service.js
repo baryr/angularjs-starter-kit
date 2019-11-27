@@ -1,23 +1,12 @@
-// albums.service.js
-(() => {
+export default class AlbumsService {
 
-    angular
-        .module('app')
-        .factory('albumsService', AlbumsService);
+  /* @ngInject */
+  constructor(apiService) {
+    this.apiService = apiService;
+  }
 
-    function AlbumsService(apiService) {
+  getAlbums() {
+    return this.apiService.get('albums', true);
+  }
 
-        return {
-            getAlbums: getAlbums
-        };
-
-        ////////////
-
-        function getAlbums() {
-            return apiService
-                .get('albums', true);
-        }
-
-    }
-
-})();
+}

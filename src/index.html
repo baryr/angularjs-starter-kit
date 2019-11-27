@@ -1,17 +1,11 @@
 <!DOCTYPE html>
 <html ng-app="app">
-
-<head>
+  <head>
     <meta charset="utf-8">
     <title ng-bind="$state.current.data.pageTitle"></title>
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico" />
-    <link rel="stylesheet" href="./style.css">
-</head>
-
-<body ng-cloak>
-    <nav-bar></nav-bar>
-    <ui-view></ui-view>
-    <script src="./script.js"></script>
-</body>
-
+  </head>
+  <body ng-cloak>
+    <app></app>
+  </body>
 </html>
